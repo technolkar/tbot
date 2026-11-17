@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ===== 2D LiDAR (similar to RPLIDAR A1 / LD06) ===== -->
+  <gazebo reference="laser_frame">
+    <sensor name="lidar" type="gpu_lidar">
+      <topic>scan</topic>
+      <gz_frame_id>laser_frame</gz_frame_id>   <!-- frame name used in the ROS message -->
+      <update_rate>10</update_rate>             <!-- 10 scans per second -->
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>360</samples>              <!-- 1 ray per degree -->
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.12</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>                                 <!-- real sensors are noisy! -->
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+    </sensor>
+  </gazebo>
+
+  <!-- ===== Camera (similar to Pi Camera v2: ~62° field of view) ===== -->
+  <gazebo reference="camera_link">
+    <sensor name="camera" type="camera">
+      <topic>camera/image_raw</topic>
+      <gz_frame_id>camera_link_optical</gz_frame_id>
+      <update_rate>15</update_rate>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <camera>
+        <horizontal_fov>1.085</horizontal_fov>  <!-- 62.2° in radians -->
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>8.0</far>
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+</robot>
